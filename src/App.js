@@ -1,7 +1,7 @@
 import React , {useState} from "react";
 
 function Section({ title, content , isVisible , setIsVisible }) {
-  
+
   const handleClick = () => {
     setIsVisible(title);
   };
@@ -36,4 +36,4 @@ function App() {
   );
 }
 
-export default App;
+export default App; 
