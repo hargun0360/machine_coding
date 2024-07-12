@@ -1,38 +1,50 @@
-import React , {useState} from "react";
+import React, { useEffect, useState } from "react";
 
-function Section({ title, content , isVisible , setIsVisible }) {
-  
-  const handleClick = () => {
-    setIsVisible(title);
-  };
+const faqData = [
+  {
+    question: "How many bones does a cat have?",
+    answer: "A cat has 230 bones - 6 more than a human",
+  },
+  {
+    question: "How much do cats sleep?",
+    answer: "The average cat sleeps 12-16 hours per day",
+  },
+  {
+    question: "How long do cats live?",
+    answer:
+      "Outdoor cats live 5 years on average. Indoor\ncats live 15 years on average.",
+  },
+];
 
+const FaqComp = ({ faq, index, isShow }) => {
   return (
-    <>
-      <div
-        style={{
-          height: 'fit-content',
-          width: "100vw",
-          border: "2px solid black",
-          padding: "5px",
-          cursor: "pointer",
-        }}
-        onClick={handleClick}
-      >
-        <h1>{title}</h1>
-        {isVisible == title ? <p>{content}</p> : null}
+      <div className="faq-box" data-index={index}>
+          <div className="que">
+              <button className={isShow ? 'arrow' : ''}></button>
+              <div>{faq.question}</div>
+          </div>
+          {isShow && <div className='ans'>{faq.answer}</div>}
       </div>
-    </>
   );
 }
 
 function App() {
-  const [isVisible , setIsVisible] = useState("accordian 1");
+  const [isShow, setIsShow] = useState({ 0: true });
+
+  const handleClick = (event) => {
+      const index = event.target.closest('.faq-box').dataset.index;
+      setIsShow((prev) => ({
+          ...prev,
+          [index]: !prev[index],
+      }));
+  };
+
   return (
-    <div className="App">
-      <Section title="accordian 1" content="this is the first section" isVisible = {isVisible} setIsVisible = {setIsVisible} />
-      <Section title="accordian 2" content="this is the second section" isVisible = {isVisible} setIsVisible = {setIsVisible} />
-      <Section title="accordian 3" content="this is the third section" isVisible = {isVisible} setIsVisible = {setIsVisible} />
-    </div>
+      <div onClick={handleClick}>
+          {faqData.map((faq, index) => (
+              <FaqComp key={index} faq={faq} index={index} isShow={!!isShow[index]} />
+          ))}
+      </div>
   );
 }
 
